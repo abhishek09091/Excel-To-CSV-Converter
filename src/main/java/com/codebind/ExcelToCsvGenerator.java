@@ -46,7 +46,7 @@ public class ExcelToCsvGenerator {
 	 * @param path        where file is located in the system 
 	 * 
 	**/
-	static void forSpecifiedProduct(File inputFile, File outputFile,String product,String path)  {
+	static void forSpecifiedProduct(File inputFile,String product,String path)  {
 		
 		StringBuffer data = new StringBuffer();
 		HashMap<String, Integer> hashMap = new HashMap<>();
@@ -90,7 +90,10 @@ public class ExcelToCsvGenerator {
 				logger.info("File Extension is valid "+ext.toUpperCase()+" but File is NOT present in given directory "+path.toUpperCase());
 				System.exit(0);
 			}
-			
+			Date date = new Date();
+			Format formatter = new SimpleDateFormat("YYYY-MM-dd_hh-mm-ss");
+		    
+			File outputFile = new File("D:\\"+product+formatter.format(date)+".txt");
 
 			FileOutputStream fos = new FileOutputStream(outputFile);
 			// Get first sheet from the workbook
@@ -342,11 +345,8 @@ public class ExcelToCsvGenerator {
 
 			if (line.getOptionValue("p") != null) 
 			{
-				Date date = new Date();
-				Format formatter = new SimpleDateFormat("YYYY-MM-dd_hh-mm-ss");
-			    
-				File outputFile = new File("D:\\"+line.getOptionValue("p")+formatter.format(date)+".txt");
-				forSpecifiedProduct(inputFile, outputFile,line.getOptionValue("p"),path);
+				
+				forSpecifiedProduct(inputFile,line.getOptionValue("p"),path);
 
 			} 
 			else if (line.getOptionValue("f") != null) 
@@ -360,7 +360,7 @@ public class ExcelToCsvGenerator {
 		catch (Exception e) 
 		{
 			
-			logger.info("File path is mandatory");
+			logger.info("\n\n\nFile path is mandatory\n\n\n");
 			HelpFormatter usage = new HelpFormatter();
 			usage.printHelp("Please Only allowed Options with Excel To Csv Generator are following", options);
 		}
